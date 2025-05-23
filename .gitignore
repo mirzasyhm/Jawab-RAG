@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Notebook specific
+.ipynb_checkpoints
+
+# Data files - uncomment if you want to ignore the data file
+# and download it each time the script runs.
+# quran_data_rag.jsonl
+
+# API Keys & Secrets - Crucial: Ensure no files with plain text secrets are committed.
+# If you were to create a .env file for local environment variables (not prompted ones),
+# add .env to this .gitignore file.
+# Example:
+# .env
+# secrets.yml
+# api_keys.txt
+
+# IDE and editor specific files
+.vscode/
+.idea/
+*.project
+*.pydevproject
+.sublime-project
+.sublime-workspace
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

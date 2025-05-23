@@ -1,0 +1,12 @@
+transformers
+datasets
+sentence-transformers
+accelerate
+bitsandbytes
+einops
+faiss-cpu
+haystack-ai
+ragas
+tiktoken
+requests
+tqdm
