@@ -5,7 +5,7 @@ VERSE_SPEC_REGEX = re.compile(
     r"""
     (?:([\w-]+)\s*(?:\(|verse|ayah|ayat))? # Optional Surah Name (group 1) followed by ( or verse/ayah
     \s*(\d+):(\d+)                        # SurahNo (group 2) : AyahStart (group 3)
-    (?:[-\u2013\u2014]\s*(\d+))?          # Optional - AyahEnd (group 4) uses different dash types
+    (?:[-–—]\s*(\d+))?                    # Optional - AyahEnd (group 4)
     \s*\)?                                # Optional closing parenthesis
     """,
     re.IGNORECASE | re.VERBOSE

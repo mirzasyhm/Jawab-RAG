@@ -236,28 +236,38 @@ def main_application_flow():
         # Add other checks if needed
         print(f"\n{missing_components_message}")
 
+
     # Download Ragas results
     if result_external_df is not None and not result_external_df.empty:
-        print(f"\nPreparing to download Ragas evaluation results as '{DOWNLOAD_FILENAME_RAGAS}'...")
-        if IN_COLAB:
-            try:
-                result_external_df.to_csv(DOWNLOAD_FILENAME_RAGAS, index=False)
-                files.download(DOWNLOAD_FILENAME_RAGAS)
-                print(f"'{DOWNLOAD_FILENAME_RAGAS}' download initiated in Colab.")
-            except Exception as e:
-                print(f"Error during Colab file download: {e}")
-                print(f"DataFrame 'result_external_df' is available. Save manually: result_external_df.to_csv('{DOWNLOAD_FILENAME_RAGAS}')")
-        else: # Not in Colab
-            try:
-                result_external_df.to_csv(DOWNLOAD_FILENAME_RAGAS, index=False)
-                print(f"Ragas evaluation results saved to '{DOWNLOAD_FILENAME_RAGAS}' in the current working directory.")
-            except Exception as e:
-                print(f"Error saving results to local file: {e}")
-    elif ragas_dataset_from_external_csv is not None:
-        print("\nRagas evaluation was not performed or failed. Prepared data (without scores) can be saved manually.")
-        # print("pd.DataFrame(ragas_dataset_from_external_csv.to_list()).to_csv('prepared_for_ragas.csv', index=False)")
+        # Always save the file to the Colab filesystem first
+        try:
+            result_external_df.to_csv(DOWNLOAD_FILENAME_RAGAS, index=False)
+            print(f"\nRagas evaluation results successfully saved to '{DOWNLOAD_FILENAME_RAGAS}' in the current Colab environment's filesystem.")
+            print("You can find it in the file browser on the left panel and download it from there.")
+
+            # Attempt files.download() only if IN_COLAB is True, but be aware it might fail if run as !python script.py
+            if IN_COLAB:
+                print(f"\nAttempting to initiate browser download for '{DOWNLOAD_FILENAME_RAGAS}'...")
+                try:
+                    # This is the line that can fail if not in a true interactive cell context
+                    from google.colab import files # Ensure it's imported here if not globally
+                    files.download(DOWNLOAD_FILENAME_RAGAS)
+                    print(f"Browser download for '{DOWNLOAD_FILENAME_RAGAS}' initiated. Check your browser downloads.")
+                except Exception as e_download:
+                    print(f"Error during automatic Colab file download initiation: {e_download}")
+                    print(f"This is common when running as '!python script.py'.")
+                    print(f"Please manually download '{DOWNLOAD_FILENAME_RAGAS}' from the Colab file browser.")
+        except Exception as e_save:
+            print(f"Error saving Ragas results to CSV: {e_save}")
+            print("The DataFrame 'result_external_df' might still be available in memory if the script hasn't terminated.")
+
+    elif ragas_dataset_from_external_csv is not None: # This means data was prepared but Ragas eval might have failed
+        print("\nRagas evaluation was not performed or did not produce a results DataFrame.")
+        print("If data was prepared for Ragas, you could try saving it manually, e.g.:")
+        print("# import pandas as pd")
+        print(f"# pd.DataFrame(ragas_dataset_from_external_csv.to_list()).to_csv('prepared_for_ragas_{DOWNLOAD_FILENAME_RAGAS}', index=False)")
     else:
-        print("\nNo Ragas evaluation results DataFrame to download.")
+        print("\nNo Ragas evaluation results DataFrame to download or save.")
 
     print("\n--- Application Flow Complete ---")
 
