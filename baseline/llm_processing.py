@@ -47,17 +47,16 @@ def generate_llm_only_formatted_answer(
 4.  Your entire response MUST be a single, continuous block of text, directly presenting the answer.
 5.  Adhere strictly to the content sequence outlined below. Do not add any extra headings, numbering, or commentary unless it's part of the answer itself.
 6.  **DO NOT** THINK FOR TRIVIAL THINGS MULTIPLE TIME.
-7.  You MUST attempt to provide all 4 pieces of information in the specified order IF you recall any Quranic citations relevant to the query. If you don't recall specific verses, Parts 2 and 3 should be omitted.
+7.  You MUST attempt to provide all 4 pieces of information in the specified order IF you recall any Quranic citations relevant to the query.
 
 User's Question: '{clean_query_for_prompt}'
 
 --- REQUIRED CONTENT SEQUENCE (Answer based on your internal knowledge) ---
 
-Part 1: Comprehensive Answer
-IN THE SAME LANGUAGE AS THE USER'S QUESTION, provide a comprehensive answer to the user's question ('{clean_query_for_prompt}') based on your internal knowledge of the Quran and Islamic teachings. If you recall relevant Quranic verses that support your answer, you should mention them in this part and then cite them fully in Part 2.
 
-Part 2: Quranic Citation (Arabic)
-IF AND ONLY IF you recalled specific Quranic verses relevant to the answer in Part 1, cite them here IN ARABIC.
+First, IN THE SAME LANGUAGE AS THE USER'S QUESTION, provide a comprehensive answer to the user's question ('{clean_query_for_prompt}') based on your internal knowledge of the Quran and Islamic teachings. If you recall relevant Quranic verses that support your answer, you should mention them in this part and then cite them fully in Part 2.
+
+Second, IF AND ONLY IF you recalled specific Quranic verses relevant to the answer in Part 1, cite them here IN ARABIC.
 - For EACH cited verse or range of verses, use this format based on the query language:
   - If query in English: "Based on Quran, surah [SurahName (e.g., Al-Baqarah)] ([SurahNo]:[AyahNo(s) e.g., 2:255 or 2:1-5]),
     \"[Full Arabic Verse Text you recall. If multiple verses, clearly number them if appropriate, e.g., (1) ... (2) ... (3) ...]\""
@@ -65,22 +64,21 @@ IF AND ONLY IF you recalled specific Quranic verses relevant to the answer in Pa
     \"[Full Arabic Verse Text you recall. Jika beberapa ayat, nomborkannya jika sesuai, cth., (١) ... (٢) ... (٣) ...]\"")
 - If you do not recall any specific verses to cite for Part 1, OMIT THIS ENTIRE PART 2 AND PART 3.
 
-Part 3: Translation of Citation
-IF AND ONLY IF a verse was cited in Part 2, immediately follow EACH Arabic verse (or block of verses) with its translation IN THE SAME LANGUAGE AS THE USER'S QUESTION. Provide the translation based on your internal knowledge.
+Third, IF AND ONLY IF a verse was cited in Part 2, immediately follow EACH Arabic verse (or block of verses) with its translation IN THE SAME LANGUAGE AS THE USER'S QUESTION. Provide the translation based on your internal knowledge.
 - Format based on the query language:
   - If query in English: "which means: \"[Full Translation Text you recall]\""
   - If query in Malay: "yang bermaksud: \"[Full Translation Text you recall]\"")
 - If a translation is unavailable from your knowledge for a cited verse, state: "Translation in the language of your question for [SurahName] ([SurahNo]:[AyahNo(s)]) is not available from my current knowledge."
 - If no verse was cited in Part 2, OMIT THIS ENTIRE PART 3.
 
-Part 4: Disclaimer
-Conclude your ENTIRE response with the EXACT disclaimer sentence appropriate for the language of the user's question ('{clean_query_for_prompt}'). Use ONLY ONE of the following, and it must be the absolute end of your response:
+
+Fourth, Conclude your ENTIRE response with the EXACT disclaimer sentence appropriate for the language of the user's question ('{clean_query_for_prompt}'). Use ONLY ONE of the following, and it must be the absolute end of your response:
 - If user's question appears to be in English: "{DISCLAIMER_EN}"
 - If user's question appears to be in Malay: "{DISCLAIMER_MS}"
 (If unsure of the language, default to the English disclaimer.)
 
 --- END OF INSTRUCTIONS ---
-Begin your response directly with Part 1.
+Begin your response directly with the first piece of information.
 """
     final_llm_prompt_content = LLM_ONLY_ANSWER_FORMAT_INSTRUCTIONS
     # System message to reinforce strict adherence to formatting and no reasoning.
