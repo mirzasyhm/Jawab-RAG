@@ -7,6 +7,7 @@ from haystack.components.writers import DocumentWriter
 from haystack.components.embedders import SentenceTransformersTextEmbedder, SentenceTransformersDocumentEmbedder
 from haystack.components.retrievers.in_memory import InMemoryBM25Retriever, InMemoryEmbeddingRetriever
 from haystack.dataclasses import Document # Ensure Document is imported
+from haystack.utils import ComponentDevice
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 # from transformers import BitsAndBytesConfig # Uncomment if using quantization for Qwen
@@ -20,7 +21,7 @@ def initialize_document_store():
 def embed_and_write_documents(document_store: InMemoryDocumentStore,
                               raw_documents: list, # These are Haystack Document objects
                               embedding_model_name: str,
-                              device: str):
+                              device: ComponentDevice):
     """
     Initializes document embedder, embeds documents, and writes them to the document store.
     """
@@ -65,7 +66,7 @@ def embed_and_write_documents(document_store: InMemoryDocumentStore,
 
 def initialize_retrievers(document_store: InMemoryDocumentStore,
                           embedding_model_name: str,
-                          device: str,
+                          device: ComponentDevice,
                           top_k_bm25: int,
                           top_k_embedding: int):
     """Initializes BM25 and Embedding retrievers."""

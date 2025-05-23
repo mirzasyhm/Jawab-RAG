@@ -79,8 +79,8 @@ def print_qa_results(answer, retrieved_docs, debug_info):
 def main_application_flow():
     """Orchestrates the main flow of the RAG application, including Ragas evaluation."""
     print("--- Initializing Application ---")
-    haystack_device_string = ComponentDevice.resolve_device().to_torch_str()
-    print(f"Haystack components will try to use device: {haystack_device_string}")
+    haystack_device = ComponentDevice.resolve_device()
+    print(f"Haystack components will try to use device: {haystack_device.to_torch_str()}")
     print(f"JSONL file path: {config.JSONL_FILE_PATH}")
     print(f"Embedding model: {config.EMBEDDING_MODEL}")
     print(f"Qwen LLM: {config.QWEN_MODEL_NAME}")
@@ -101,13 +101,13 @@ def main_application_flow():
     if not embed_and_write_documents(document_store,
                                      raw_documents,
                                      config.EMBEDDING_MODEL,
-                                     haystack_device_string):
+                                     haystack_device):
         print("Failed to embed and write documents. Exiting.")
         return
 
     print("\n--- Phase 3: Retriever Initialization ---")
     bm25_retriever, embedding_retriever, query_text_embedder = initialize_retrievers(
-        document_store, config.EMBEDDING_MODEL, haystack_device_string,
+        document_store, config.EMBEDDING_MODEL, haystack_device,
         config.TOP_K_BM25, config.TOP_K_EMBEDDING
     )
     if not bm25_retriever or not embedding_retriever or not query_text_embedder:
